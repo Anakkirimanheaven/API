@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Str;
 use Validator;
 
-class KategoriController extends Controller
+class TagController extends Controller
 {
     public function index()
     {
-        $kategori = Kategori::latest()->get();
+        $tag = Tag::latest()->get();
         $res = [
             'success' => true,
-            'message' => 'Daftar Kategori',
-            'data' => $kategori,
+            'message' => 'Daftar Tag',
+            'data' => $tag,
         ];
         return response()->json($res, 200);
     }
@@ -24,7 +24,7 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_kategori' => 'required|unique:kategoris',
+            'nama_tag' => 'required|unique:Tags',
         ]);
 
         if ($validator->fails()) {
@@ -36,14 +36,14 @@ class KategoriController extends Controller
         }
 
         try {
-            $kategori = new Kategori();
-            $kategori->nama_kategori = $request->nama_kategori;
-            $kategori->slug = Str::slug($request->nama_kategori);
-            $kategori->save();
+            $tag = new Tag();
+            $tag->nama_tag = $request->nama_tag;
+            $tag->slug = Str::slug($request->nama_tag);
+            $tag->save();
             return response()->json([
                 'success' => true,
                 'message' => 'data berhasil dibuat',
-                'data' => $kategori,
+                'data' => $tag,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -56,14 +56,14 @@ class KategoriController extends Controller
 
     public function show($id)
     {
-        try{
-            $kategori = Kategori::findOrFail($id);
+        try {
+            $tag = Tag::findOrFail($id);
             return response()->json([
                 'success' => true,
-                'message' => 'detail kategori',
-                'data' => $kategori,
+                'message' => 'detail Tag',
+                'data' => $tag,
             ], 200);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'data tidak ditemukan',
@@ -75,7 +75,7 @@ class KategoriController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'nama_kategori' => 'required',
+            'nama_tag' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -87,14 +87,14 @@ class KategoriController extends Controller
         }
 
         try {
-            $kategori = Kategori::findOrFail($id);
-            $kategori->nama_kategori = $request->nama_kategori;
-            $kategori->slug = Str::slug($request->nama_kategori);
-            $kategori->save();
+            $tag = Tag::findOrFail($id);
+            $tag->nama_tag = $request->nama_tag;
+            $tag->slug = Str::slug($request->nama_tag);
+            $tag->save();
             return response()->json([
                 'success' => true,
                 'message' => 'data berhasil dibuat',
-                'data' => $kategori,
+                'data' => $tag,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -105,16 +105,16 @@ class KategoriController extends Controller
         }
     }
 
-     public function destroy($id)
+    public function destroy($id)
     {
-        try{
-            $kategori = Kategori::findOrFail($id);
-            $kategori->delete();
+        try {
+            $tag = Tag::findOrFail($id);
+            $tag->delete();
             return response()->json([
                 'success' => true,
-                'message' => 'data' . $kategori->nama_kategori . 'berhasil dihapus',
+                'message' => 'data' . $tag->nama_tag . 'berhasil dihapus',
             ], 200);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'data tidak ditemukan',
