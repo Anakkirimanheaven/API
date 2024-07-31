@@ -62,7 +62,7 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             return response()->json([
                 'success' => true,
-                'message' => 'detail Tag',
+                'message' => 'detail User',
                 'data' => $user,
             ], 200);
         } catch (\Exception $e) {
@@ -79,7 +79,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|unique:users',
-            'password' => 'required|min:8',
         ]);
 
         if ($validator->fails()) {
@@ -94,11 +93,10 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = bcrypt($request->password);
             $user->save();
             return response()->json([
                 'success' => true,
-                'message' => 'data berhasil dibuat',
+                'message' => 'data berhasil diperbarui',
                 'data' => $user,
             ], 200);
         } catch (\Exception $e) {
